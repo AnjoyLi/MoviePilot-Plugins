@@ -316,6 +316,8 @@ class QqMsg(_PluginBase):
         # channel = msg_body.get("channel")
         # if channel:
         #     return
+        if self.modulemanager:
+            return
         # 类型
         msg_type: NotificationType = msg_body.get("type")
         # 标题
