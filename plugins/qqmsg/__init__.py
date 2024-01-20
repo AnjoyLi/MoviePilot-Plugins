@@ -21,7 +21,7 @@ class QqMsg(_PluginBase):
     # 主题色
     plugin_color = "#fdfffd"
     # 插件版本
-    plugin_version = "1.0"
+    plugin_version = "1.1"
     # 插件作者
     plugin_author = "anjoyli"
     # 作者主页
@@ -45,6 +45,7 @@ class QqMsg(_PluginBase):
     _qq_number = None
     # 发送一次测试消息
     _testonce = False
+    is_register = False
 
     def init_plugin(self, config: dict = None):
         logger.info(f"初始化插件 {self.plugin_name}")
@@ -60,29 +61,34 @@ class QqMsg(_PluginBase):
         if not self._send_msg_url or not self._qq_number:
             self._enabled = False
         
-        # send_fastapi_msg默认开启交互
-        if self._send_type == 'send_fastapi_msg':
-            if self.modulemanager:
-                if self.modulemanager.get_modules('message_parser') == []:
-                    self.register_module()
-            else:
-                self.modulemanager = ModuleManager()
-                self.register_module()
         
-        if self._testonce and self._enabled:
-            logger.info(f"发送qq测试消息")
-            self.send_msg_to_qq(title="测试消息", text="内容", user="tester")
-            self._testonce = False
+        if self._enabled:
+            if self._testonce:
+                logger.info(f"发送qq测试消息")
+                self.send_msg_to_qq(title="测试消息", text="内容", user="tester")
+                self._testonce = False
 
-            self.update_config({
-                "testonce": False,
-                "enabled": self._enabled,
-                "send_type": self._send_type,
-                "msg_url": self._send_msg_url,
-                "qq_number": self._qq_number,
-                "token": self._token,
-                "msgtypes": self._msgtypes or []
-            })
+                self.update_config({
+                    "testonce": False,
+                    "enabled": self._enabled,
+                    "send_type": self._send_type,
+                    "msg_url": self._send_msg_url,
+                    "qq_number": self._qq_number,
+                    "token": self._token,
+                    "msgtypes": self._msgtypes or []
+                })
+            # send_fastapi_msg默认开启交互
+            if self._send_type == 'send_fastapi_msg':
+                if self.modulemanager:
+                    if not self.is_register:
+                        self.register_module()
+                else:
+                    self.modulemanager = ModuleManager()
+                    self.register_module()
+        else:
+            if self.modulemanager and self.is_register:
+                self.unregister_module()
+
 
     def register_module(self):
         modules = ModuleHelper.load(
@@ -98,6 +104,22 @@ class QqMsg(_PluginBase):
             _module.init_module(url=f"{self._send_msg_url}/send_fastapi_msg",num=self._qq_number)
             self.modulemanager._running_modules[module_id] = _module
             logger.info(f"Moudle Loaded：{module_id}")
+        self.is_register = True
+
+
+    def unregister_module(self):
+        modules = ModuleHelper.load(
+            "app.plugins.qqmsg",
+            filter_func=lambda _, obj: hasattr(obj, 'init_module') and hasattr(obj, 'init_setting')
+        )
+        for module in modules:
+            module_id = module.__name__
+            if module_id in self.modulemanager._running_modules:
+                del self.modulemanager._modules[module_id]
+                self.modulemanager._running_modules[module_id].stop()
+                del self.modulemanager._running_modules[module_id]
+                logger.info(f"Moudle Unloaded：{module_id}")
+        self.is_register = False
 
 
     def get_state(self) -> bool:
@@ -312,14 +334,15 @@ class QqMsg(_PluginBase):
             return
 
         msg_body = event.event_data
+        logger.info(f"收到消息：{msg_body}")
         # 渠道
         # channel = msg_body.get("channel")
         # if channel:
         #     return
-        if self.modulemanager:
-            return
         # 类型
         msg_type: NotificationType = msg_body.get("type")
+        if self.is_register and msg_type == NotificationType.Organize:
+            return 
         # 标题
         title = msg_body.get("title")
         # 文本
