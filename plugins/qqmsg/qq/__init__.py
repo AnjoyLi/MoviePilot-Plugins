@@ -18,6 +18,15 @@ class QQModule(_ModuleBase):
     def stop(self):
         self.qq.stop()
 
+    def test(self) -> Tuple[bool, str]:
+        """
+        测试模块连接性
+        """
+        state = self.qq.get_state()
+        if state:
+            return True, ""
+        return False, "QQ未就续，请检查参数设置和网络连接"
+  
     def init_setting(self) -> Tuple[str, Union[str, bool]]:
         return "MESSAGER", "telegram"
 

@@ -21,7 +21,7 @@ class QqMsg(_PluginBase):
     # 主题色
     plugin_color = "#fdfffd"
     # 插件版本
-    plugin_version = "1.1"
+    plugin_version = "1.2"
     # 插件作者
     plugin_author = "anjoyli"
     # 作者主页
@@ -61,7 +61,7 @@ class QqMsg(_PluginBase):
         if not self._send_msg_url or not self._qq_number:
             self._enabled = False
         
-        
+
         if self._enabled:
             if self._testonce:
                 logger.info(f"发送qq测试消息")
@@ -341,7 +341,7 @@ class QqMsg(_PluginBase):
         #     return
         # 类型
         msg_type: NotificationType = msg_body.get("type")
-        if self.is_register and msg_type == NotificationType.Organize:
+        if self.is_register and (msg_type == NotificationType.Organize or msg_type == NotificationType.Download):
             return 
         # 标题
         title = msg_body.get("title")

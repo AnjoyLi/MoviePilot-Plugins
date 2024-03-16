@@ -29,6 +29,12 @@ class QQ(metaclass=Singleton):
         self._ds_url = url
         self._qq_number = num
 
+    def get_state(self) -> bool:
+        """
+        获取状态
+        """
+        return self._ds_url is not None
+    
     def __send_request(self, userid: str = None, image="", caption="",title= "") -> bool:
         headers = {'content-type': 'application/json'}
         message_url = self._ds_url
