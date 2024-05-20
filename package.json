@@ -2,10 +2,13 @@
     "QqMsg": {
         "name": "QQ消息推送",
         "description": "支持使用QQ发送消息通知、交互。",
-        "version": "1.2",
+        "version": "1.3",
         "icon": "https://qzonestyle.gtimg.cn/qzone/qzact/act/external/tiqq/logo.png",
         "color": "#C9221B",
         "author": "anjoyli",
-        "level": 1
+        "level": 1,
+        "history": {
+            "v1.3": "修改交互bug & 重复订阅消息"
+        }
     }
 }

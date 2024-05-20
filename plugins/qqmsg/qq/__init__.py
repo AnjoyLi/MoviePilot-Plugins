@@ -14,6 +14,10 @@ class QQModule(_ModuleBase):
 
     def init_module(self, url, num) -> None:
         self.qq = QQ(url=url,num=num)
+    
+    @staticmethod
+    def get_name() -> str:
+        return "Telegram"
 
     def stop(self):
         self.qq.stop()

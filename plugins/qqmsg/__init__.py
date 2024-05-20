@@ -21,7 +21,7 @@ class QqMsg(_PluginBase):
     # 主题色
     plugin_color = "#fdfffd"
     # 插件版本
-    plugin_version = "1.2"
+    plugin_version = "1.3"
     # 插件作者
     plugin_author = "anjoyli"
     # 作者主页
@@ -341,7 +341,7 @@ class QqMsg(_PluginBase):
         #     return
         # 类型
         msg_type: NotificationType = msg_body.get("type")
-        if self.is_register and (msg_type == NotificationType.Organize or msg_type == NotificationType.Download):
+        if self.is_register and (msg_type == NotificationType.Organize or msg_type == NotificationType.Download or msg_type == NotificationType.Subscribe):
             return 
         # 标题
         title = msg_body.get("title")
