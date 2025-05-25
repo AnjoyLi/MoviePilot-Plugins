@@ -17,7 +17,7 @@ class QqMsg(_PluginBase):
     # 插件描述
     plugin_desc = "支持使用QQ发送消息通知、交互。"
     # 插件图标
-    plugin_icon = "https://qzonestyle.gtimg.cn/qzone/qzact/act/external/tiqq/logo.png"
+    plugin_icon = "QQ_A.png"
     # 主题色
     plugin_color = "#fdfffd"
     # 插件版本

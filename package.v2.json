@@ -3,7 +3,7 @@
         "name": "QQ消息推送",
         "description": "支持使用QQ发送消息通知、交互。",
         "version": "1.0",
-        "icon": "https://qzonestyle.gtimg.cn/qzone/qzact/act/external/tiqq/logo.png",
+        "icon": "QQ_A.png",
         "author": "anjoyli",
         "level": 1,
         "history": {

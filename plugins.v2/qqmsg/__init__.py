@@ -17,11 +17,11 @@ class QqMsg(_PluginBase):
     # 插件描述
     plugin_desc = "支持使用QQ发送消息通知、交互。"
     # 插件图标
-    plugin_icon = "https://qzonestyle.gtimg.cn/qzone/qzact/act/external/tiqq/logo.png"
+    plugin_icon = "QQ_A.png"
     # 主题色
     plugin_color = "#fdfffd"
     # 插件版本
-    plugin_version = "1.3"
+    plugin_version = "1.0"
     # 插件作者
     plugin_author = "anjoyli"
     # 作者主页
@@ -29,7 +29,7 @@ class QqMsg(_PluginBase):
     # 插件配置项ID前缀
     plugin_config_prefix = "qqmsg_"
     # 加载顺序
-    plugin_order = 28
+    plugin_order = 99
     # 可使用的用户级别
     auth_level = 1
 
